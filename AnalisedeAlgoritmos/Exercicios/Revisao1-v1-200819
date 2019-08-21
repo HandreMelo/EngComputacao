@@ -1,0 +1,38 @@
+/*
+Resolucao do problema desta atividade: https://www.urionlinejudge.com.br/judge/pt/problems/view/1110
+*/
+
+#include <iostream>
+#include <cstdio> 
+#include <vector> 
+using namespace std;   
+
+vector<int> baralho; 
+vector<int> novoVet; 
+
+int resp=0;  
+
+void popular(int n){ 
+	for (int i=1;i<=n;i++){ 	
+	baralho.push_back(i); 	
+} 
+}  
+void novoV(int val){ 
+	novoVet.push_back(val);
+ }  
+
+void movimentar(int n){ 	
+popular(n); 	
+int i; 	
+for(i=0;i<n-1;i++){ 
+		novoV(baralho[i]); 
+		baralho.push_back(baralho[i+1]); 		baralho.erase(baralho.begin(),baralho.begin()+1); 	
+} 	
+resp = baralho[i]; 
+}  
+ int main(){ 
+	movimentar(6); 
+	cout<<"Sobrou a carta: "<<resp<<"\n";
+	cout<<"Vetor das cartas que sairam :";
+ 	for(int i=0;i<novoVet.size();i++)cout<<novoVet[i];
+ }
