@@ -7,50 +7,64 @@ Resolucao do problema desta atividade: https://www.urionlinejudge.com.br/judge/p
 #include <vector> 
 using namespace std;   
 
-vector<int> baralho; 
-vector<int> novoVet;   
+struct Casos{
+	vector<int> novoVet;
+	int sobra;
+}caso;
 
-void apagar();
+vector<int> baralho; 
 
 void popular(int n){ 
-	for (int i=1;i<=n;i++){ 	
-	baralho.push_back(i); 	
-} 
+	for (int i=1;i<=n;i++) baralho.push_back(i);
 }
 
 void apagar(){
 	baralho.erase(baralho.begin(),baralho.end());
-	novoVet.erase(novoVet.begin(),novoVet.end());
+	caso.novoVet.erase(caso.novoVet.begin(),caso.novoVet.end());
 }
-  
-void novoV(int val){ 
-	novoVet.push_back(val);
- }  
 
 int movimentar(int n){ 	
 	popular(n); 	
-	int i,resp; 	
+	int i;
 	for(i=0;i<n-1;i++){ 
-		novoV(baralho[i]); 
+		caso.novoVet.push_back(baralho[i]);
 		baralho.push_back(baralho[i+1]); 		
 		baralho.erase(baralho.begin(),baralho.begin()+1); 	
 	} 	
-	return resp = baralho[i]; 
+	if (n>1) return baralho[i];
+	else return 0;
+	
 }  
 
  int main(){ 
- 
- int opc=0;
- 	do{
- 		int resp;
- 		apagar();
+ 	vector<Casos> vCasos;
+ 	vector<int> vOpc;
+ 	int opc,resp;
+ 	int count=0;
+
+	do{
+		cout<<"Digite o num. de cartas : ";
+ 		cin>>opc;
+ 		vOpc.push_back(opc);
  		
- 		cout<<"Digite o num. de cartas : ";
-	 	cin>>opc;
-	 	opc > 0 ? resp=movimentar(opc):resp=0;
-		cout<<"Sobrou a carta: "<<resp<<"\n";
-		cout<<"Vetor das cartas que sairam :";
-	 	for(int i=0;i<novoVet.size();i++)cout<<novoVet[i];
-	 	cout<<"\n";
- 	}while(opc!=-1);
+ 	}while(opc!=0);
+ 	
+ 	for (int i=0;i<vOpc.size()-1;i++){
+ 		caso.sobra=movimentar(vOpc[i]);
+ 		vCasos.push_back(caso);
+ 		caso.novoVet.clear();
+ 		caso.sobra=0;
+ 		baralho.clear();
+ 	}
+ 	for(int i=0;i<vCasos.size();i++){
+		int j=0;
+		cout<<"Discarded cards: ";
+		for(j;j<vCasos[i].novoVet.size();j++){
+			 cout<<vCasos[i].novoVet[j];
+			 if (j<vCasos[i].novoVet.size()-1)cout<<", ";
+			 else cout<<"\n";
+			}
+		cout<<"Remaining card: "<<vCasos[i].sobra;
+	 	cout<<"\n";	
+	}
  }
