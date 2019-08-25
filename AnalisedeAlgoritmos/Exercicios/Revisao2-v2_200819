@@ -1,0 +1,81 @@
+//Codigo solucao para o problema 2 (Diamantes e Areia)
+//link - https://www.urionlinejudge.com.br/judge/pt/problems/view/1069 
+
+#include <iostream>
+#include <vector>
+#include <cstring>
+#include <string>
+
+using namespace std;
+
+struct CasoTeste{
+	char fragsArray[1000];
+	int tamanho;
+	int diamExt;
+}caso;
+
+vector<CasoTeste> vCasos;
+string entrada;
+int nCasos,tamanho;
+int nDiam=0;
+int marca[1000]={0};
+
+void extrair(){
+	
+	for(int n=0;n < vCasos.size();n++){
+		tamanho = vCasos[n].tamanho;
+		int partes=0;
+		int diamAntes=0;
+		int ia,ib;
+		char frag;
+		nDiam=0;
+		
+			for (int i=0;i<tamanho;i++){
+				frag = vCasos[n].fragsArray[i];
+				if(frag == '<'){
+					ib=i;
+					for(ib;ib<tamanho;ib++){
+						frag = vCasos[n].fragsArray[ib];
+						if(frag=='>'){
+						nDiam+=1;
+						vCasos[n].diamExt=nDiam;
+						vCasos[n].fragsArray[i]='.';
+						vCasos[n].fragsArray[ib]='.';
+						break;
+						}
+					}
+				}
+			}
+		cout<<vCasos[n].diamExt<<"\n";
+	}
+}
+
+void mostrarCaso(){
+	cout<<"Numero de Casos de Teste :"<<vCasos.size()<<"\n";
+	for (int n=0;n<vCasos.size();n++){
+		cout<<"Caso de Teste "<<n<<"\n";
+		cout<<"Array com "<<vCasos[n].tamanho<<"\n";
+		for(int i=0;i<vCasos[n].tamanho;i++){
+			cout<<vCasos[n].fragsArray[i];
+		}
+	}
+}
+
+int main(){
+	int opt=0;
+	cout<<"Digite o numero de Casos de Teste : ";
+	cin>>nCasos;
+	cout<<"\n";
+	cout<<"Digite os casos"<<"\n";
+	
+	for(int i=0;i<nCasos;i++){
+		cin>>entrada;
+		caso.tamanho=entrada.length();
+		strcpy(caso.fragsArray, entrada.c_str());
+		vCasos.push_back(caso);
+	}
+	if (nCasos>0) extrair();
+	else cout<<0;
+
+}
+
