@@ -1,0 +1,74 @@
+//ALunos: André F.,Lucas Trevizan, Phelipe Hass
+#include <glut.h>
+
+GLfloat yMove = 0;
+GLfloat xMove = 0;
+GLfloat xScale = 1;
+GLfloat yScale = 1;
+GLfloat angulo = 0;
+
+void Inicializa(void)
+{
+	// Define a janela de visualização 2D
+	glMatrixMode(GL_PROJECTION);
+	//posicionamento inicial da figura
+	gluOrtho2D(1.0, 1.0, -1.0, 1.0);
+	glMatrixMode(GL_MODELVIEW);
+}
+
+void renderScene(void) {
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glBegin(GL_QUADS);
+	glVertex3f(-0.2, -0.2, 0.0);
+	glVertex3f(0.2, -0.2, 0.0);
+	glVertex3f(0.2, 0.2, 0.0);
+	glVertex3d(-0.2, 0.2, 0.0);
+	glEnd();
+	glutSwapBuffers();
+}
+
+void reload() {
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	glTranslatef(xMove, yMove, 0);
+	glRotatef(angulo, 0.0f, 0.0f, 1.0f);
+	glScalef(xScale, yScale, 1.0f);
+	renderScene();
+	glutPostRedisplay();
+}
+
+void rotacao(unsigned char key, int x, int y) {
+	angulo += (key == 'r' ? 15.0 : 0.0);
+	reload();
+}
+
+void keyBoard(int key, int x, int y) {
+	xMove += (key == GLUT_KEY_RIGHT ? 0.2 : 0.0);
+	xMove -= (key == GLUT_KEY_LEFT ? 0.2 : 0.0);
+	
+	yMove += (key == GLUT_KEY_UP ? 0.2 : 0.0);
+	yMove -= (key == GLUT_KEY_DOWN ? 0.2 : 0.0);
+
+	xScale += (key == GLUT_KEY_PAGE_UP ? 0.2 : 0.0);
+	xScale -= (key == GLUT_KEY_PAGE_DOWN && xScale > 0.1 ? 0.2 : 0.0);
+
+	yScale = xScale;
+
+	reload();
+}
+
+int main(int argc, char** argv) {
+	// Inicia o GLUT e cria a janela
+	glutInit(&argc, argv);
+	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
+	glutInitWindowPosition(100, 100);
+	glutInitWindowSize(500, 500);
+	glutCreateWindow("GLUT Tutorial");
+	// Registra callbacks
+	glutDisplayFunc(renderScene);
+	glutSpecialFunc(keyBoard);
+	glutKeyboardFunc(rotacao);
+	Inicializa();
+	glutMainLoop();
+	return 1;
+}
