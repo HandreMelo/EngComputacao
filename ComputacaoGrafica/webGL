@@ -1,4 +1,9 @@
-/*============= Creating a canvas =================*/
+<!doctype html>
+<html>
+   <body>
+      <canvas width = "170" height = "170" id = "my_Canvas"></canvas>
+
+         /*============= Creating a canvas =================*/
          var canvas = document.getElementById('my_Canvas');
          gl = canvas.getContext('experimental-webgl');
 
@@ -219,4 +224,8 @@
       
 chama();
 
-
+      <script>
+     
+      </script>
+   </body>
+</html>
