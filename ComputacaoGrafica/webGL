@@ -1,11 +1,4 @@
-<!doctype html>
-<html>
-   <body>
-      <canvas width = "170" height = "170" id = "my_Canvas"></canvas>
-
-      <script>
-        
-        /*============= Creating a canvas =================*/
+/*============= Creating a canvas =================*/
          var canvas = document.getElementById('my_Canvas');
          gl = canvas.getContext('experimental-webgl');
 
@@ -165,10 +158,25 @@
             m[6] = c*m[6]-s*mv4;
             m[10] = c*m[10]-s*mv8;
          }
+         //var x,y,z=1;
+         function transladar(m,x,y,z){
+           m[12] = x;
+           m[13] = y;
+           m[14] = z;
+         }
+         function escalar(m,x,y,z){
+           m[0]=x;
+           m[5]=y;
+           m[10]=z;
+         }
+         function rotacionar(m,x_angle,y_angle,z_angle){
+           if(x_angle>0)rotateX(m,x_angle);
+           if(y_angle>0)rotateY(m,y_angle);
+           if(z_angle>0)rotateZ(m,z_angle);
+         }
 
          /*================= Drawing ===========================*/
-var tm=0;
-var doIt=0;
+
          var animate = function() {
             gl.enable(gl.DEPTH_TEST);
             gl.depthFunc(gl.LEQUAL);
@@ -183,24 +191,15 @@ var doIt=0;
             gl.drawElements(gl.TRIANGLES, indices.length, gl.UNSIGNED_SHORT, 0);
             
          }
-         
-        var aumentador = 1
-        animate(0);
+        animate();
         var chama = function(){
-        //rotateZ(mov_matrix, tm);//time
-        //rotateY(mov_matrix, tm);
-        //translateX(mov_matrix, tm);
-        //translateY(mov_matrix, tm);
-        //translateZ(mov_matrix, tm);
-        //scaleX(mov_matrix, tm);
-        //scaleY(mov_matrix, tm);
-        //scaleZ(mov_matrix, tm);
-        console.log(mov_matrix);
-        console.log(aumentador)
-        rotateY(mov_matrix, 15);
-        console.log(mov_matrix);
+        transladar(mov_matrix,1,1,1);//x,y,z
+        escalar(mov_matrix,0.5,0.5,0.5);//x,y,z
+        rotacionar(mov_matrix,10,20,0);//angulos em x,y,z
         animate();        
       }
+        
+        
       
                /*================= Drawing ===========================*/
  function keyDownHandler(event) {
@@ -221,9 +220,3 @@ var doIt=0;
 chama();
 
 
-
-        
-        
-      </script>
-   </body>
-</html>
