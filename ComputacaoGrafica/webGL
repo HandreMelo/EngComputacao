@@ -3,7 +3,8 @@
    <body>
       <canvas width = "170" height = "170" id = "my_Canvas"></canvas>
 
-         /*============= Creating a canvas =================*/
+      <script>
+     /*============= Creating a canvas =================*/
          var canvas = document.getElementById('my_Canvas');
          gl = canvas.getContext('experimental-webgl');
 
@@ -197,13 +198,13 @@
             
          }
         animate();
-        var chama = function(){
-        transladar(mov_matrix,1,1,1);//x,y,z
-        escalar(mov_matrix,0.5,0.5,0.5);//x,y,z
-        rotacionar(mov_matrix,10,20,0);//angulos em x,y,z
+        var chama = function(opcao, x,y,z){
+          if(opcao=="r") rotacionar(mov_matrix,x,y,z);//angulos em x,y,z
+          if(opcao=="t") transladar(mov_matrix,x,y,z);//x,y,z
+          if(opcao=="e") escalar(mov_matrix,x,y,z);//x,y,z
         animate();        
       }
-        
+      chama("t",1,1,0);
         
       
                /*================= Drawing ===========================*/
@@ -221,11 +222,9 @@
     	upPressed = true;
     }
 }
-      
-chama();
 
-      <script>
-     
+
+
       </script>
    </body>
 </html>
