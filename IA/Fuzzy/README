@@ -1,0 +1,5 @@
+Atividade para a disciplina de Inteligência Artificial ministrada pelo prof. Claudinei Dias
+Equipe de trabalho: André F.C. Melo, Lucas Trevizan Arabites, Phelipe Hass Pereira
+
+Simulador de um sistema de pêndulo invertido em uma base móvel responsável por equilibrá-lo.
+*No arquivo sim.py o ângulo inicial usado foi de 30°.
