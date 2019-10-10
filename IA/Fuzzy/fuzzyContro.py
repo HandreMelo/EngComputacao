@@ -1,4 +1,5 @@
 from numpy import max
+from decimal import *
 from math import sin, cos, pi
 
 class fuzzyControl(object):
@@ -11,15 +12,7 @@ class fuzzyControl(object):
             inclination = state[1]
             linear_vel = state[2]
             angular_vel = state[3]
-    #
-    #        X = A· θ + B·
-    #        dθ
-    #        dt...........(4)#
 
-    #        Y = C· x + D·
-    #        dx
-    #        dt............(5)
-    #
         # -------------------------------------------------------------
         # Inclination
         # -------------------------------------------------------------
@@ -33,11 +26,14 @@ class fuzzyControl(object):
 
         # Zero membership determination for inclination
             if -0.1 < inclination < -0.03:
-                zero_th = (100/7) * inclination + 10/7
+                zero_th = -(100/7) * inclination + 10/7
             elif -0.03 <= inclination <= 0.03:
-                zero_th = 1
+                if inclination<=0:
+                    zero_th= 1#+inclination
+                else:
+                    zero_th=1-inclination
             elif 0.03 < inclination < 0.1:
-                zero_th = -(100 / 7) * inclination + 10 / 7
+                zero_th = (100 / 7) * inclination + 10 / 7
             else:
                 zero_th = 0
 
@@ -62,11 +58,14 @@ class fuzzyControl(object):
 
         # Zero membership determination for angluar velocity
             if -0.15 < angular_vel < -0.03:
-                zero_thd = (100/12) * angular_vel + 15/12
+                zero_thd = -(100/12) * angular_vel + 15/12
             elif -0.03 <= angular_vel <= 0.03:
-                zero_thd = 1
+                if angular_vel<=0:
+                    zero_thd = 1#+angular_vel
+                else:
+                    zero_thd = 1 - angular_vel
             elif 0.03 < angular_vel < 0.15:
-                zero_thd = -(100/12) * angular_vel + 15/12 # 1/(0.15-0.03)(que é = 8.333 = 100/12) * angular_vel + 0.15/(0.12-0.03)= 1.25 = 15/12
+                zero_thd = (100/12) * angular_vel + 15/12 # 1/(0.15-0.03)(que é = 8.333 = 100/12) * angular_vel + 0.15/(0.12-0.03)= 1.25 = 15/12
             else:
                 zero_thd = 0
 
@@ -93,12 +92,14 @@ class fuzzyControl(object):
 
         # Zero membership determination for position
             if -1.5 < position < -0.5:
-                zero_x = position + 3
-                #print(position)
+                zero_x = -position + 1.5
             elif -0.5 <= position <= 0.5:
-                zero_x = 1
+                if position<=0:
+                    zero_x=1# + position
+                else:
+                    zero_x=1-position
             elif 0.5 < position < 1.5:
-                zero_x = -position + 3
+                zero_x = position + 1.5
             else:
                 zero_x = 0
 
@@ -123,11 +124,14 @@ class fuzzyControl(object):
 
         # Zero membership determination for linear velocity
             if -1.5 < linear_vel < -0.5:
-                zero_xd = linear_vel + 3
+                zero_xd = linear_vel + 1.5
             elif -0.5 <= linear_vel <= 0.5:
-                zero_xd = 1
+                if linear_vel<=0:
+                    zero_xd=1#+linear_vel
+                else:
+                    zero_xd=1-linear_vel
             elif 0.5 < linear_vel < 1.5:
-                zero_xd = -linear_vel + 3
+                zero_xd = linear_vel + 1.5
             else:
                 zero_xd = 0
 
@@ -199,13 +203,16 @@ class fuzzyControl(object):
         # CAR rule # 9
             PL_plv.append(min(positive_x, positive_xd))
 
-        # Determination of the force applied to the car 1
-            num_p_iav = max(NL_iav)*-100 + max(NM_iav)*-40 + max(NS_iav)*-5 + max(Z_iav)*0 + max(PS_iav)*5 + max(PM_iav)*40 + max(PL_iav)*100
-            den_p_iav = max(NL_iav)+max(NM_iav)+max(NS_iav)+max(Z_iav)+max(PS_iav)+max(PM_iav)+max(PL_iav)
+        # Determination of the force applied to the car 1 // inclination and ang. velocity//-19/+19
+            num_iav = max(NL_iav)*-120 + max(NM_iav)*-60 + max(NS_iav)*-6 + max(Z_iav)*0 + max(PS_iav)*6 + max(PM_iav)*60 + max(PL_iav)*120
+            den_iav = max(NL_iav)+max(NM_iav)+max(NS_iav)+max(Z_iav)+max(PS_iav)+max(PM_iav)+max(PL_iav)
 
-        # Determination of the force applied to the car 2
-            num_p_plv = max(NL_plv)*-50 + max(NM_plv)*-5 + max(NS_plv)*-1 + max(Z_plv)*0 + max(PS_plv)*1 + max(PM_plv)*5 + max(PL_plv)*50
-            den_p_plv = max(NL_plv)+max(NM_plv)+max(NS_plv)+max(Z_plv)+max(PS_plv)+max(PM_plv)+max(PL_plv)
-            #return ((num_p_iav+num_p_plv) / (den_p_iav+den_p_plv))
-            #return (num_p_iav / den_p_plv) + (num_p_plv / den_p_iav)
-            return (num_p_iav / den_p_iav) + (num_p_plv / den_p_plv)
+        # Determination of the force applied to the car (position + linear vel)
+            num_plv = max(NL_plv)*-80 + max(NM_plv)*-17 + max(NS_plv)*-5 + max(Z_plv)*0 + max(PS_plv)*5 + max(PM_plv)*17 + max(PL_plv)*80
+            den_plv = max(NL_plv)+max(NM_plv)+max(NS_plv)+max(Z_plv)+max(PS_plv)+max(PM_plv)+max(PL_plv)
+
+            iav = num_iav / den_iav
+            plv = num_plv / den_plv
+            resp = (iav+plv)
+
+            return resp
