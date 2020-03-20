@@ -9,6 +9,7 @@ indexController = (function($){
     function addPerson(){
         $('#addPerson').on('click', function(){
             convertImageToBase64();
+            usuario.nome = $('#nome').val();
             settings['url'] = "https://api.luxand.cloud/subject";
             settings['data'] = {"name":usuario['nome']};
             
@@ -47,7 +48,7 @@ indexController = (function($){
 
     $(document).ready(function(){
         usuario = {
-            'nome': $('#nome').val(),
+            'nome': '',
             'imagem':'',
         }
     
