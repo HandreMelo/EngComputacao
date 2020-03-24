@@ -11,16 +11,16 @@
     <div class="d-flex justify-content-center h-100">
       <div class="card">
         <div class="card-header">
-          <select class="form-control form-control-lg">
-            <option><h3>Add Person</h3></option>
-            <option><h3>List Persons</h3></option>
-            <option><h3>Remove Person</h3></option>
+          <select id="selectOption" class="form-control form-control-lg">
+            <option rel="addPerson"><h3>Add Person</h3></option>
+            <option rel="listPersons"><h3>List Persons</h3></option>
+            <option rel="removePersons"><h3>Remove Person</h3></option>
           </select>
           <div class="d-flex justify-content-end social_icon">
             <h3>Face Project</h3>
           </div>
         </div>
-        <div class="card-body">
+        <div class="card-body active" id="addPerson">
 
             <div class="input-group form-group">
               <div class="input-group-prepend">
@@ -39,10 +39,39 @@
               </div>
             </div>
             <div class="form-group">
-              <button id="addPerson" class="btn float-right login_btn">Add</button>
-            </div>
+              <button id="addPerson" class="btn login_btn" disabled="disabled">Add</button>
 
+              <div class="alert alert-primary"  id="alertResponse" role="alert" style="display: none;">
+              </div>
+            </div>
         </div>
+
+        <div class="card-body" id="listPersons" style="display: none;">
+          <div class="form-group">
+            <button id="listPersons" class="btn login_btn">List</button>
+          </div>
+
+          <table class="table table-dark" id="tablePersons" style="display: none;">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">id</th>
+                <th scope="col">Name</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">1</th>
+                <td>Mark</td>
+                <td>Otto</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card-body" id="removePersons" style="display: none;">
+        </div>
+
       </div>
     </div>
   </div>

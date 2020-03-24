@@ -2,8 +2,10 @@ indexController = (function($){
     var usuario, settings;
 
     function init(){
+        detectChangeSelect();
         customSelectedDropzone();
         addPerson();
+        listPersons();
     }
 
     function addPerson(){
@@ -16,13 +18,51 @@ indexController = (function($){
             $.ajax(settings).done(function(data){
                 settings['url'] = "https://api.luxand.cloud/subject/"+data['id'];
                 settings['data'] = {"store": "1","photo": usuario['imagem']};
+                settings['method'] = 'POST';
                 console.log(data);
 
                 $.ajax(settings).done(function (data) {
-                    console.log(data);
+                    if(!data.fail){
+                        settingsAlerts();
+                    }
                 });
             });
         });
+    }
+
+    function listPersons(){
+        $('#listPersons').on('click',function(){
+            settings['url'] = "https://api.luxand.cloud/subject";
+            settings['data'] = {};
+            settings['method'] = 'GET';
+
+            $.ajax(settings).done(function(responseData){
+                if(!responseData.fail){
+                    console.log(responseData);
+                    createTableListPersons(responseData);
+                } else{
+                    console.log(responseData);
+                }
+            });
+        });
+    }
+
+    function createTableListPersons(responseData){
+        var tbodyTable = $('#tablePersons tbody');
+
+        for(var cont=0;cont<responseData.length;cont++){
+            var newTr = $('<tr></tr>'),
+                newTh = $("<tr>"+cont+"</tr>", {scope: "row"}),
+                tdId = $("<td>"+responseData[cont].id+"</td>"),
+                tdName = $("<td>"+responseData[cont].name+"</td>");
+
+            newTr.append(newTh);
+            newTr.append(tdId);
+            newTr.append(tdName);
+            tbodyTable.append(newTr);
+        }
+
+        $('#tablePersons').css({'display': 'block'});
     }
 
     function customSelectedDropzone(){
@@ -31,6 +71,15 @@ indexController = (function($){
             
             $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
         });
+    }
+
+    function settingsAlerts(){
+        $('#alertResponse').text("Cadastrado foto com sucesso!")
+                           .css({'display': 'block'});
+
+        setTimeout(() => {
+            $('#alertResponse').fadeOut();
+        }, 4000);
     }
 
     function convertImageToBase64(){
@@ -44,6 +93,21 @@ indexController = (function($){
         }
 
         reader.readAsDataURL(file);
+    }
+
+    function detectChangeSelect(){
+        $(document).on('change','#selectOption',function(){
+            var idOptionSelected = $(this).find("option:selected").attr('rel');
+            changeCardBody(idOptionSelected);
+       });
+    }
+
+    function changeCardBody(idCardBody){
+        cardBodyCurrent = $('.active');
+        cardBodySelected = $("#"+idCardBody);
+
+        cardBodyCurrent.css({'display':'none'}).removeClass('active');
+        cardBodySelected.css({'display':'block'}).addClass('active');
     }
 
     $(document).ready(function(){
