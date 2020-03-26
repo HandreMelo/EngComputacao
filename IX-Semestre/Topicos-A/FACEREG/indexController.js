@@ -9,29 +9,38 @@ indexController = (function($){
     }
 
     function addPerson(){
-        $('#addPerson').on('click', function(){
-            convertImageToBase64();
-            usuario.nome = $('#nome').val();
-            settings['url'] = "https://api.luxand.cloud/subject";
-            settings['data'] = {"name":usuario['nome']};
+        $(document).on('click','#submitPerson', function(){
+            debugger
             
-            $.ajax(settings).done(function(data){
-                settings['url'] = "https://api.luxand.cloud/subject/"+data['id'];
-                settings['data'] = {"store": "1","photo": usuario['imagem']};
-                settings['method'] = 'POST';
-                console.log(data);
 
-                $.ajax(settings).done(function (data) {
-                    if(!data.fail){
-                        settingsAlerts();
-                    }
+            if ($('#nome').val() !== '' && document.querySelector('input[type=file]').files[0] !== undefined) {
+                convertImageToBase64();
+                usuario.nome = $('#nome').val();
+                settings['url'] = "https://api.luxand.cloud/subject";
+                settings['data'] = {"name":usuario['nome']};
+            
+                $.ajax(settings).done(function(data){
+                    settings['url'] = "https://api.luxand.cloud/subject/"+data['id'];
+                    settings['data'] = {"store": "1","photo": usuario['imagem']};
+                    settings['method'] = 'POST';
+                    console.log(data);
+
+                    $.ajax(settings).done(function (data) {
+                        if(!data.fail){
+                            settingsAlerts('Usuario cadastrado com sucesso!');
+                        }
+                    });
                 });
-            });
+            } else {
+                settingsAlerts('Um dos campos nao foi preenchido corretamente');
+            }
+
+            
         });
     }
 
     function listPersons(){
-        $('#listPersons').on('click',function(){
+        $('#submitListPersons').on('click',function(){
             settings['url'] = "https://api.luxand.cloud/subject";
             settings['data'] = {};
             settings['method'] = 'GET';
@@ -73,8 +82,8 @@ indexController = (function($){
         });
     }
 
-    function settingsAlerts(){
-        $('#alertResponse').text("Cadastrado foto com sucesso!")
+    function settingsAlerts(setText){
+        $('#alertResponse').text(setText)
                            .css({'display': 'block'});
 
         setTimeout(() => {
@@ -86,13 +95,18 @@ indexController = (function($){
         var inputFile = document.querySelector('input[type=file]'),
             file = inputFile.files[0],
             reader = new FileReader();
+            debugger
 
-        reader.onloadend = function(){
-            var b64 = reader.result.replace(/^data:.+;base64,/, '');
-            usuario['imagem'] = b64;
-        }
+        if (file === undefined) {
+            return null;
+        } else {
+            reader.onloadend = function(){
+                var b64 = reader.result.replace(/^data:.+;base64,/, '');
+                usuario['imagem'] = b64;
+            }
 
-        reader.readAsDataURL(file);
+            reader.readAsDataURL(file);
+        }    
     }
 
     function detectChangeSelect(){
@@ -105,6 +119,7 @@ indexController = (function($){
     function changeCardBody(idCardBody){
         cardBodyCurrent = $('.active');
         cardBodySelected = $("#"+idCardBody);
+        $('#tablePersons').css({'display': 'none'});
 
         cardBodyCurrent.css({'display':'none'}).removeClass('active');
         cardBodySelected.css({'display':'block'}).addClass('active');
@@ -113,7 +128,7 @@ indexController = (function($){
     $(document).ready(function(){
         usuario = {
             'nome': '',
-            'imagem':'',
+            'imagem': '',
         }
     
         settings = {
