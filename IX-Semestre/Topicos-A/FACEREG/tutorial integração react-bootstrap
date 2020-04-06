@@ -1,0 +1,10 @@
+via line command dentro da pasta do projeto executar:
+npm install --save bootstrap
+npm install --save reactstrap react react-dom
+Logo após isso no arquivo index.js da sua pasta src  fazer o seguinte import:
+import 'bootstrap/dist/css/bootstrap.min.css';
+Nos outros arquivos que for usar o bootstrap, usar o import com os componentes específicos a serem
+usados. Ex:
+No arquivo articleAddUser tem o seguinte import:
+import { Jumbotron, Container } from 'reactstrap';
+Isto faz com que possa ser usado os componentes importados, e que se possa usar as class do bootstrap.
