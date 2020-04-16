@@ -1,0 +1,41 @@
+.options-list {
+    max-width: 700px;
+    margin: 20px auto 0;
+    padding: 0 20px;
+}
+
+.options-list article {
+    background: #fff;
+    border: 1px solid blue;
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.options-list article p {
+    font-size: 16px;
+    color: rgb(92, 79, 79);
+    margin-top: 5px;
+    line-height: 24px;
+}
+
+.options-list article a {
+    height: 42px;
+    border-radius: 5px;
+    border: 2px solid blue;
+    background: none;
+    margin-top: 10px;
+    color: blue;
+    font-weight: 16px;
+    font-size: 16px;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.5s;
+}
+
+.options-list article a:hover {
+    background: blue;
+    color: #fff;
+}

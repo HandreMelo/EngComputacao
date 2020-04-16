@@ -1,14 +1,10 @@
 import React from 'react';
-import Headers from './Headers';
-import ArticleAddUser from './ArticleAddUser';
+import Routes from  './routes';
 
-function App (props) {
-  return (
-    <div>
-        <Headers />
-        <ArticleAddUser />
-    </div>    
-  );
-};
+const App = () => (
+    <div className="App">
+        <Routes />
+    </div>
+ )
 
 export default App;
