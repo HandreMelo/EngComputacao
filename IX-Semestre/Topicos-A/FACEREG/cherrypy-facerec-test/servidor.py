@@ -6,18 +6,17 @@ class StringGenerator(object):
     @cherrypy.expose
     def index(self):
         return open('index.html')
-#
-#    @cherrypy.expose
-#    def enviarArquivo(self, ufile):
-#        upload_path = os.path.dirname(__file__)
-#        #resposta = facerec6.lerArquivo(ufile)
-#        facerec6.lerArquivo(ufile)
 
     @cherrypy.expose
-    def enviarArquivo(self, ufile, uname, *args, **post):
+    def cadastrar(self, ufile, uname, *args, **post):
         upload_path = os.path.dirname(__file__)
-        facerec6.lerArquivo(ufile,uname)
-             
+        return facerec6.cadastrar(ufile,uname)
+    
+    @cherrypy.expose
+    def procurar(self, ufile, *args, **post):
+        upload_path = os.path.dirname(__file__)
+        return facerec6.procurar(ufile)
+
 if __name__ == '__main__':
     conf = {
         '/': {
