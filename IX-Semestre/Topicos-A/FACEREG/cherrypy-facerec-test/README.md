@@ -2,7 +2,7 @@
 
 Para tudo dar certo:
 
-Python == 3.7.4
+Python == 3.7.4 \n
 pip install face_recognition==1.3.0
 pip install face_recognition_models==0.3.0 (acho que já vem com o face_recognition)
 pip install dlib==19.19.0
