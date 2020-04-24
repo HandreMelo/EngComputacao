@@ -14,21 +14,20 @@
             <div class="container text-black">
                 <div class="row">
                     <div class="offset-sm-3 col-sm-6 text-center">
-                        <h1 class="display-4" style="color: #fff !important;">Grafos</h1>
-						<!--
-                        <form method="post" action="/enviarArquivo">
-
-                            <input type="file" name="ufile" class="btn btn-primary btnInsert"/>
-							<input type="text" name="uname"/>
-							<input type="submit" />
-                        </form>
-						-->
-						<form method="post" action="/enviarArquivo">
+                        <h2>Cadastrar</h2>
+						<form method="post" action="/cadastrar">
 						  <input type="file" name="ufile" class="btn btn-primary btnInsert"/>
 						  <input type="text" id="uname" name="uname" value="Doe"><br><br>
 						  <input type="submit" value="Submit">
 						</form> 
-                    </div>
+					</div>
+					<div class="offset-sm-3 col-sm-6 text-center">
+						<h2>Procurar</h2>
+						<form method="post" action="/procurar">
+						  <input type="file" name="ufile" class="btn btn-primary btnInsert"/>
+						  <input type="submit" value="Submit">
+						</form> 
+					</div>
                 </div>
             </div>
         </div>
