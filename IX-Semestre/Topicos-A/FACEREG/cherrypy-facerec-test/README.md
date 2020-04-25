@@ -1,8 +1,8 @@
 <h1> Teste de Upload de fotos para reconhecimento facial </h1>
 
 Para tudo dar certo:
-
-pip install -r requirements.txt
+>Instalar o CMake x64 (https://cmake.org/download/)
+>pip install -r requirements.txt
 
 > Ainda faltam vários ajustes, estes são arquivos de teste. Mas já é possível implementá-los no site. 
 > Para cadastro, enviar foto e nome para o método cadastrar com os parâmetros arquivo, stringNome. 
