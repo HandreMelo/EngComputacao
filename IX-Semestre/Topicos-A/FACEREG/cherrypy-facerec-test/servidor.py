@@ -9,12 +9,12 @@ class StringGenerator(object):
 
     @cherrypy.expose
     def cadastrar(self, ufile, uname, *args, **post):
-        upload_path = os.path.dirname(__file__)
+        upload_path = os.path.dirname(ufile)
         return facerec6.cadastrar(ufile,uname)
     
     @cherrypy.expose
     def procurar(self, ufile, *args, **post):
-        upload_path = os.path.dirname(__file__)
+        upload_path = os.path.dirname(ufile)
         return facerec6.procurar(ufile)
 
 if __name__ == '__main__':
