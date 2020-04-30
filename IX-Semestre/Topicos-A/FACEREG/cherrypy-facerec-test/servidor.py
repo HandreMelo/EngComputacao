@@ -1,28 +1,28 @@
 import facerec6
 import os.path
 import cherrypy
-import cherrypy_cors
-import json
+from cherrypy.lib import static
+#https://www.programcreek.com/python/example/401/base64.b64decode
 
-class StringGenerator(object):
+localDir = os.path.dirname(__file__)
+absDir = os.path.join(os.getcwd(), localDir)
+
+class facerecServer(object):
     @cherrypy.expose
     def index(self):
         return open('index.html')
 
     @cherrypy.expose
     def cadastrar(self, ufile, uname, *args, **post):
-        datafile = json.loads(ufile)
-        dataname = json.loads(uname)
-        upload_path = os.path.dirname(datafile)
-        return facerec6.cadastrar(datafile,dataname)
-    
+        upload_path = ufile.file
+        return facerec6.cadastrar(upload_path,uname)
+
     @cherrypy.expose
-    def procurar(self, ufile, *args, **post):
-        upload_path = os.path.dirname(ufile)
-        return facerec6.procurar(ufile)
+    def procurar(self, ufile):
+        upload_path = ufile.file#.read()
+        return facerec6.procurar(upload_path)
 
 if __name__ == '__main__':
-    cherrypy_cors.install()
     conf = {
         '/': {
             'tools.sessions.on': True,
@@ -30,12 +30,11 @@ if __name__ == '__main__':
         },
         '/static': {
             'tools.staticdir.on': True,
-            'tools.staticdir.dir': './public'
+            'tools.staticdir.dir': ''
         },
-        'global': {
-            'server.socket_host': '192.168.1.105',
-            'server.socket_port': 8080,
-            'cors.expose.on': True
-        }
+        'global': 
+            {'server.socket_host': '0.0.0.0'} #IP do servirdor da máquina para acessar remotamente (na mesma rede local), 192.168.0.3 por exemplo
+        
     }
-    cherrypy.quickstart(StringGenerator(), '/', conf)
+
+    cherrypy.quickstart(facerecServer(), '/', conf)
