@@ -15,22 +15,26 @@
                 <div class="row">
                     <div class="offset-sm-3 col-sm-6 text-center">
                         <h2>Cadastrar</h2>
-						<form method="post" action="/cadastrar">
-						  <input type="file" name="ufile" class="btn btn-primary btnInsert"/>
-						  <input type="text" id="uname" name="uname" value="Doe"><br><br>
-						  <input type="submit" value="Submit">
-						</form> 
+						<form method="post" action="/cadastrar" enctype="multipart/form-data">
+						<form>
+						  <input type="file" id="ufile" name="ufile" class="btn btn-primary btnInsert"/>
+						  <input type="text" id="uname" name="uname" value="Doe"/>
+						  <input type="submit" value="Submit"/>
+						</form>
 					</div>
 					<div class="offset-sm-3 col-sm-6 text-center">
 						<h2>Procurar</h2>
-						<form method="post" action="/procurar">
-						  <input type="file" name="ufile" class="btn btn-primary btnInsert"/>
+						<form method="post" action="/procurar" enctype="multipart/form-data">
+						<form>
+						  <input type="file" id="uf" name="ufile" class="btn btn-primary btnInsert"/>
+						  <!--<input type="text" id="uname" name="ufile" value="Doe"><br><br>-->
 						  <input type="submit" value="Submit">
-						</form> 
+						</form>
 					</div>
                 </div>
             </div>
         </div>
-
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	</script>
 	</body>
 </html>
