@@ -2,6 +2,7 @@ import face_recognition
 import numpy as np
 from dataIO import pk as pickle
 import time
+#import image_decoder as imdec
 #https://pythonhosted.org/dataIO/pk.html
 def cadastrar(file,name):
     all_face_encodings = {}
@@ -9,13 +10,14 @@ def cadastrar(file,name):
     load_image = face_recognition.load_image_file(file)
     image_encoding = face_recognition.face_encodings(load_image)[0]
     try:
-        all_face_encodings = pickle.load(pickle_file)          
+        all_face_encodings = pickle.load(pickle_file)
     except:
         print("Arquivo vazio")
         print("Depois : "+str(all_face_encodings))
     try:
         all_face_encodings[name] = image_encoding
         pickle.safe_dump(all_face_encodings, pickle_file)
+
     except:
         raise
         return "Ocorreu um erro ao salvar os dados"
@@ -23,6 +25,11 @@ def cadastrar(file,name):
     return "Foto cadastrada com sucesso"
 
 def procurar(file):
+    #file = file1
+    #file = imdec.decodificar(file)
+    
+    print("TIPO  :::::: ")
+    print(type(file))
     # Load face encodings
     all_face_encodings = {}
     pickle_file = 'dataset_faces.pickle'
@@ -37,17 +44,18 @@ def procurar(file):
         erro = "Não foi possivel acessar o banco de dados"
         return erro
 
-    # Carregar a lista dos rostos codificados
+    # Grab the list of names and the list of encodings
     face_names = list(all_face_encodings.keys())
     print(face_names)
     face_encodings = np.array(list(all_face_encodings.values()))
 
-    # Comparar imagem
+    # Try comparing an unknown image
     unknown_image = face_recognition.load_image_file(file)
+    #unknown_image = file
     unknown_face = face_recognition.face_encodings(unknown_image)
     result = face_recognition.compare_faces(face_encodings, unknown_face)
 
-    # Mostrar se e quem achou
+    # Print the result as a list of names with True/False
     names_with_result = dict(zip(result, face_names))
     if True in names_with_result.keys():
         return names_with_result[True]
