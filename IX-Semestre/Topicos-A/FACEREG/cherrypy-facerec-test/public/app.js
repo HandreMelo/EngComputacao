@@ -3,7 +3,7 @@
 
 
 // Initialize Firebase
-
+var lastUser = ''
 var config = {
     apiKey: "AIzaSyDXgjRZ2H1QnGpnMoDEN9TOTXxbYL-Pb1Q",
     authDomain: "facerec-d9fa1.firebaseapp.com",
@@ -14,7 +14,6 @@ var config = {
     appId: "1:1061417028783:web:3ec6e7c2762137b0b2585a"
 };
 
-
 firebase.initializeApp(config);
 
 // Firebase Database Reference and the child
@@ -24,13 +23,22 @@ const usersRef = dbRef.child('andre');
 readUserData(); 
 
 var camera = document.getElementById('face-in');
+var camera2 = document.getElementById('face-in2');
 var frame = document.getElementById('face');
+var frame2 = document.getElementById('face2');
 
   camera.addEventListener('change', function(e) {
     var file = e.target.files[0]; 
     // Do something with the image file.
     frame.src = URL.createObjectURL(file);
   });
+  
+camera2.addEventListener('change', function(e) {
+    var file = e.target.files[0]; 
+    // Do something with the image file.
+    frame2.src = URL.createObjectURL(file);
+  });
+
  var usuario = {
  	'imagem': ''
  }
@@ -82,9 +90,13 @@ function readUserData() {
 
 
 	})
+	
 
 }
 
+function retornoProcurar() {
+	console.log(lastUser);
+}
 
 
 function userClicked(e) {
@@ -110,10 +122,6 @@ function userClicked(e) {
 
 }
 
-
-
-
-
 // --------------------------
 // ADD
 // --------------------------
@@ -121,16 +129,14 @@ function userClicked(e) {
 const addUserBtnUI = document.getElementById("add-user-btn");
 addUserBtnUI.addEventListener("click", addUserBtnClicked)
 
-
-
+var USERPHOTO;
 function addUserBtnClicked() {
-
+	let newUser = {};
 	const usersRef = dbRef.child('andre');
 
 	const addUserInputsUI = document.getElementsByClassName("user-input");
 
- 	// this object will hold the new user information
-    let newUser = {};
+    
 
     // loop through View to get the data for the model 
     for (let i = 0, len = addUserInputsUI.length; i < len; i++) {
@@ -138,12 +144,27 @@ function addUserBtnClicked() {
         let key = addUserInputsUI[i].getAttribute('data-key');
         let value = addUserInputsUI[i].value;
         newUser[key] = value;
+		USERPHOTO = newUser['photo'];
 		newUser['photo'] = btoa(newUser['photo'])
     }
-	usersRef.push(newUser)
-
+	//const fs = require('fs') 
+	usersRef.push(newUser).then(pushed => {lastUser = pushed.key;sendToPy();});
+	
 }
 
+function sendToPy(){
+	//file = document.getElementById('face-in').files[0];
+	const file = document.getElementById('face-in').files[0];
+	var formData = new FormData();
+    //file = document.getElementById('cad-user').file;
+    xhr = new XMLHttpRequest();
+	xhr.open('POST', '/cadastrar',false);
+	//xhr.setRequestHeader("type", "multipart/form-data");
+	formData.append('ufile', file);
+	formData.append('uname', lastUser);
+	xhr.send(formData);
+	
+}
 
 // --------------------------
 // DELETE
@@ -218,15 +239,3 @@ function saveUserBtnClicked(e) {
 
 
 }
-
-
-
-        
-
-
-
-
-
-
-
-
