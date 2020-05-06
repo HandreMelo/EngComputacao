@@ -14,7 +14,7 @@
     <!-- add user module -->
     <section id="add-user-module" align="left">
         <button id="open-add-user-form-btn">Adicionar</button>
-        <form method="post" action="/cadastrar" enctype="multipart/form-data">
+        <form action="/cadastrar" method="post" enctype="multipart/form-data" id="cad-user"><!--sem action, chamar o cadastrar no JS-->
             <h2>Adicionar Cliente</h2>
 			<img  id="face" src="/static/smile.jpg" height="100" width="100"></img> 
 			<br>
@@ -32,9 +32,9 @@
 			<br>
 			Foto:
 			<br>
-			<input type="file" id="face-in" name="ufile" data-key='photo' class='user-input' accept="image/*" capture />
+			<input type="file" name="ufile" id="face-in" data-key='photo' class='user-input' accept="image/*" capture />
 			<br>
-            <button type='input' id="add-user-btn">Confirmar</button>
+            <button type='button' id="add-user-btn">Confirmar</button>
         </form>
 		</section>
 		</td><td>
@@ -42,13 +42,13 @@
 		<button id="open-add-user-form-btn">Procurar</button>
 		<form method="post" action="/procurar" enctype="multipart/form-data">
             <h2>Procurar Cliente</h2>
-			<img  id="face" src="/static/smile.jpg" height="100" width="100"></img> 
+			<img  id="face2" src="/static/smile.jpg" height="100" width="100"></img> 
 			<br>
 			Foto:
 			<br>
-			<input type="file" id="face-in" name="ufile" data-key='photo' class='user-input' accept="image/*" capture />
+			<input type="file" id="face-in2" name="ufile" data-key='photo' class='user-input' accept="image/*" capture />
 			<br>
-            <button type='input' id="add-user-btn">Confirmar</button>
+            <button type='input' id="add-user-btn2">Confirmar</button>
         </form>
     </section>
 	</table></tr></td>
@@ -70,10 +70,13 @@
 
     <!-- show user module -->
     <ul id="user-list"></ul>
-    <div id="user-detail"></div>
+    <div id="user-detail">
+	<ul id="user-result">RESULTADO</ul>
+	</div>
 
-
+	
     <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
     <script type="text/javascript" src="/static/app.js"></script>
 
   </body>
