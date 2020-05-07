@@ -25,7 +25,30 @@ class facerecServer(object):
     def procurar(self, ufile):
         upload_path = ufile.file
         resultado = facerec6.procurar(upload_path)
-        return '''<html><body><img src="/static/smile.jpg"><h1>Resultado : '''+resultado+'''</h1><button onclick="goBack()">VOLTAR</button>
+        if resultado == "Não encontrou ninguém":
+            ret =  '''<html><body><img src="/static/smile.jpg"><h1>'''+resultado+'''</h1><button onclick="goBack()">VOLTAR</button>
+        <script>function goBack() {
+  window.history.back();
+}</script></body></html>'''
+        ret = '''<html><body><img src="/static/smile.jpg"><h1>ID encontrado : '''+resultado+'''</h1><button onclick="goBack()">VOLTAR</button>
+        <script>function goBack() {
+  window.history.back();
+}</script></body></html>'''
+        return ret
+        
+    @cherrypy.expose
+    def deletar(self, uname):
+        resultado = facerec6.deletar(uname)
+        return '''<html><body><h1>Usuário removido com sucesso</h1><button onclick="goBack()">VOLTAR</button>
+        <script>function goBack() {
+  window.history.back();
+}</script></body></html>'''
+
+    @cherrypy.expose
+    def atualizar(self, ufile, uname, *args, **post):
+        upload_path = ufile.file
+        resultado = facerec6.atualizar(upload_path,uname)
+        return '''<html><body><h1>Foto tualizada com sucesso</h1><button onclick="goBack()">VOLTAR</button>
         <script>function goBack() {
   window.history.back();
 }</script></body></html>'''
