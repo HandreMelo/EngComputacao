@@ -18,7 +18,7 @@ firebase.initializeApp(config);
 
 // Firebase Database Reference and the child
 const dbRef = firebase.database().ref();
-const usersRef = dbRef.child('andre');
+const usersRef = dbRef.child('teste');
 
 readUserData(); 
 
@@ -104,7 +104,7 @@ function userClicked(e) {
 
 		var userID = e.target.getAttribute("user-key");
 
-		const userRef = dbRef.child('andre/' + userID);
+		const userRef = dbRef.child('teste/' + userID);
 		const userDetailUI = document.getElementById("user-detail");
 
 		userRef.on("value", snap => {
@@ -129,14 +129,13 @@ function userClicked(e) {
 const addUserBtnUI = document.getElementById("add-user-btn");
 addUserBtnUI.addEventListener("click", addUserBtnClicked)
 
-var USERPHOTO;
+
 function addUserBtnClicked() {
+	document.getElementById('add-user-module').style.display = "block";
 	let newUser = {};
-	const usersRef = dbRef.child('andre');
+	const usersRef = dbRef.child('teste');
 
 	const addUserInputsUI = document.getElementsByClassName("user-input");
-
-    
 
     // loop through View to get the data for the model 
     for (let i = 0, len = addUserInputsUI.length; i < len; i++) {
@@ -144,25 +143,25 @@ function addUserBtnClicked() {
         let key = addUserInputsUI[i].getAttribute('data-key');
         let value = addUserInputsUI[i].value;
         newUser[key] = value;
-		USERPHOTO = newUser['photo'];
 		newUser['photo'] = btoa(newUser['photo'])
     }
-	//const fs = require('fs') 
-	usersRef.push(newUser).then(pushed => {lastUser = pushed.key;sendToPy();});
+	const file = document.getElementById('face-in').files[0];
+	usersRef.push(newUser).then(pushed => {lastUser = pushed.key;sendToPy('cadastrar',lastUser,file);});
 	
 }
 
-function sendToPy(){
-	//file = document.getElementById('face-in').files[0];
-	const file = document.getElementById('face-in').files[0];
+function sendToPy(crud, userId, file){
+	
 	var formData = new FormData();
-    //file = document.getElementById('cad-user').file;
+    
     xhr = new XMLHttpRequest();
-	xhr.open('POST', '/cadastrar',false);
-	//xhr.setRequestHeader("type", "multipart/form-data");
-	formData.append('ufile', file);
-	formData.append('uname', lastUser);
+	xhr.open('POST', '/'+crud,true);
+	if(crud == 'atualizar' || crud == 'cadastrar') {
+		formData.append('ufile', file);
+	}
+	formData.append('uname', userId);
 	xhr.send(formData);
+	
 	
 }
 
@@ -174,10 +173,9 @@ function deleteButtonClicked(e) {
 		e.stopPropagation();
 
 		var userID = e.target.getAttribute("userid");
-
-		const userRef = dbRef.child('andre/' + userID);
-		
+		const userRef = dbRef.child('teste/' + userID);
 		userRef.remove();
+		sendToPy('deletar',userID,'');
 
 }
 
@@ -191,8 +189,8 @@ function editButtonClicked(e) {
 
 	//set user id to the hidden input field
 	document.querySelector(".edit-userid").value = e.target.getAttribute("userid");
-
-	const userRef = dbRef.child('andre/' + e.target.getAttribute("userid"));
+	
+	const userRef = dbRef.child('teste/' + e.target.getAttribute("userid"));
 
 	// set data to the user field
 	const editUserInputsUI = document.querySelectorAll(".edit-user-input");
@@ -208,9 +206,6 @@ function editButtonClicked(e) {
 
 	});
 
-
-
-
 	const saveBtn = document.querySelector("#edit-user-btn");
 	saveBtn.addEventListener("click", saveUserBtnClicked)
 }
@@ -219,7 +214,7 @@ function editButtonClicked(e) {
 function saveUserBtnClicked(e) {
  
 	const userID = document.querySelector(".edit-userid").value;
-	const userRef = dbRef.child('andre/' + userID);
+	const userRef = dbRef.child('teste/' + userID);
 
 	var editedUserObject = {}
 
