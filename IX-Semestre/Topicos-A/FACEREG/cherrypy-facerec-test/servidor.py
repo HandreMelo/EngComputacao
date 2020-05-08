@@ -10,17 +10,48 @@ absDir = os.path.join(os.getcwd(), localDir)
 class facerecServer(object):
     @cherrypy.expose
     def index(self):
-        return open('index.html')
+        return open('index-crud.html')
 
     @cherrypy.expose
     def cadastrar(self, ufile, uname, *args, **post):
         upload_path = ufile.file
-        return facerec6.cadastrar(upload_path,uname)
+        resultado = facerec6.cadastrar(upload_path,uname)
+        return '''<html><body><img src="/static/smile.jpg"><h1>'''+resultado+'''</h1><button onclick="goBack()">VOLTAR</button>
+        <script>function goBack() {
+  window.history.back();
+}</script></body></html>'''
 
     @cherrypy.expose
     def procurar(self, ufile):
-        upload_path = ufile.file#.read()
-        return facerec6.procurar(upload_path)
+        upload_path = ufile.file
+        resultado = facerec6.procurar(upload_path)
+        if resultado == "Não encontrou ninguém":
+            ret =  '''<html><body><img src="/static/smile.jpg"><h1>'''+resultado+'''</h1><button onclick="goBack()">VOLTAR</button>
+        <script>function goBack() {
+  window.history.back();
+}</script></body></html>'''
+        ret = '''<html><body><img src="/static/smile.jpg"><h1>ID encontrado : '''+resultado+'''</h1><button onclick="goBack()">VOLTAR</button>
+        <script>function goBack() {
+  window.history.back();
+}</script></body></html>'''
+        return ret
+        
+    @cherrypy.expose
+    def deletar(self, uname):
+        resultado = facerec6.deletar(uname)
+        return '''<html><body><h1>Usuário removido com sucesso</h1><button onclick="goBack()">VOLTAR</button>
+        <script>function goBack() {
+  window.history.back();
+}</script></body></html>'''
+
+    @cherrypy.expose
+    def atualizar(self, ufile, uname, *args, **post):
+        upload_path = ufile.file
+        resultado = facerec6.atualizar(upload_path,uname)
+        return '''<html><body><h1>Foto tualizada com sucesso</h1><button onclick="goBack()">VOLTAR</button>
+        <script>function goBack() {
+  window.history.back();
+}</script></body></html>'''
 
 if __name__ == '__main__':
     conf = {
@@ -30,10 +61,10 @@ if __name__ == '__main__':
         },
         '/static': {
             'tools.staticdir.on': True,
-            'tools.staticdir.dir': ''
+            'tools.staticdir.dir': './public'
         },
         'global': 
-            {'server.socket_host': '0.0.0.0'} #IP do servirdor da máquina para acessar remotamente (na mesma rede local), 192.168.0.3 por exemplo
+            {'server.socket_host': '192.168.1.X'}
         
     }
 

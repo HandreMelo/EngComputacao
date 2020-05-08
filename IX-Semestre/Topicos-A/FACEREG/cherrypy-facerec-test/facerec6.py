@@ -23,11 +23,45 @@ def cadastrar(file,name):
         return "Ocorreu um erro ao salvar os dados"
     
     return "Foto cadastrada com sucesso"
+    
+def deletar(name):
+    all_face_encodings = {}
+    pickle_file = 'dataset_faces.pickle'
+    try:
+        all_face_encodings = pickle.load(pickle_file)
+    except:
+        print("Arquivo vazio")
+    try:
+        all_face_encodings.pop(name)
+        pickle.safe_dump(all_face_encodings, pickle_file)
+        print("Depois : "+str(all_face_encodings))
+        
+    except:
+        return "Ocorreu um erro ao salvar os dados"
+    
+    return "Usuário removido com sucesso."
+    
+def atualizar(file,name):
+    all_face_encodings = {}
+    pickle_file = 'dataset_faces.pickle'
+    load_image = face_recognition.load_image_file(file)
+    image_encoding = face_recognition.face_encodings(load_image)[0]
+    try:
+        all_face_encodings = pickle.load(pickle_file)
+    except:
+        print("Arquivo vazio")
+    try:
+        all_face_encodings[name] = image_encoding
+        pickle.safe_dump(all_face_encodings, pickle_file)
+
+    except:
+        raise
+        return "Ocorreu um erro ao salvar os dados"
+    
+    return "Foto atualizada com sucesso"
 
 def procurar(file):
-    #file = file1
-    #file = imdec.decodificar(file)
-    
+
     print("TIPO  :::::: ")
     print(type(file))
     # Load face encodings
@@ -36,6 +70,7 @@ def procurar(file):
     erro = ""
     try:
         all_face_encodings = pickle.load(pickle_file)
+        print(all_face_encodings)
         if all_face_encodings:
             print(all_face_encodings.keys())
         else:
@@ -46,6 +81,7 @@ def procurar(file):
 
     # Grab the list of names and the list of encodings
     face_names = list(all_face_encodings.keys())
+    print("FACE NAMES")
     print(face_names)
     face_encodings = np.array(list(all_face_encodings.values()))
 
@@ -60,4 +96,3 @@ def procurar(file):
     if True in names_with_result.keys():
         return names_with_result[True]
     return "Não encontrou ninguém"
- 

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Facerec Cadastro de Clientes</title>
+    <link href="/static/css/style.css" rel="stylesheet">
+  </head>
+  <body>
+
+    <h1>Facerec Cadastro de Clientes
+        <br/><small><em>App clientes</em></small>
+    </h1>
+	<table style="width:100%"><tr><td>
+    <!-- add user module -->
+    <section id="add-user-module" align="left">
+        <button id="open-add-user-form-btn">Adicionar</button>
+        <form method="post" enctype="multipart/form-data" id="cad-user"><!--sem action, chamar o cadastrar no JS-->
+            <h2>Adicionar Cliente</h2>
+			<img  id="adicionar-face" src="/static/smile.jpg" height="100" width="100"></img> 
+			<br>
+			Nome:
+			<br>
+            <input type='text' name="uname" data-key='nome' class='user-input'/>
+			<br>
+            Telefone:
+			<br>
+            <input type='text' data-key='telefone' class='user-input'/>
+			<br>
+			Email:
+			<br>
+            <input type='text' data-key='email' class='user-input'/>
+			<br>
+			Foto:
+			<br>
+			<input type="file" name="ufile" id="adicionar-face-file" data-key='photo' class='user-input' accept="image/*" capture />
+			<br>
+            <button type='button' id="add-user-btn">Confirmar</button>
+        </form>
+		</section>
+		</td><td>
+		<section id="add-user-module" align="right">
+		<button id="open-add-user-form-btn">Procurar</button>
+		<form method="post" action="/procurar" enctype="multipart/form-data">
+            <h2>Procurar Cliente</h2>
+			<img  id="procurar-face" src="/static/smile.jpg" height="100" width="100"></img> 
+			<br>
+			Foto:
+			<br>
+			<input type="file" id="procurar-face-file" name="ufile" data-key='photo' class='user-input' accept="image/*" capture />
+			<br>
+            <button type='input' id="add-user-btn2">Confirmar</button>
+        </form>
+    </section>
+	</table></tr></td>
+    <!-- edit user module -->
+    <section id="edit-user-module">
+        <form>
+            <h2>Edit user</h2>
+            <input type="hidden" class="edit-userid">
+			<img  id="editar-face" src="/static/smile.jpg" height="100" width="100"></img> 
+            Nome:<br>
+            <input type='text' data-key='nome' class='edit-user-input'><br>
+            Telefone:<br>
+            <input type='text' data-key='telefone' class='edit-user-input'><br>
+            Email:<br>
+            <input type='text' data-key='email' class='edit-user-input'><br>
+			Foto:
+			<br>
+			<input type="file" id="editar-face-file" name="ufile" data-key='photo' class='user-input' accept="image/*" capture />
+			<br>
+            <button type='button' id="edit-user-btn">save</button>
+        </form>
+    </section>
+	
+
+    <!-- show user module -->
+    <ul id="user-list"></ul>
+    <div id="user-detail">
+	<ul id="user-result">RESULTADO</ul>
+	</div>
+
+	
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/app.js"></script>
+
+  </body>
+
+</html>
