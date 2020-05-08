@@ -5,21 +5,21 @@
 // Initialize Firebase
 
 var config = {
-    apiKey: "AIzaSyDXgjRZ2H1QnGpnMoDEN9TOTXxbYL-Pb1Q",
-    authDomain: "facerec-d9fa1.firebaseapp.com",
-    databaseURL: "https://facerec-d9fa1.firebaseio.com",
-    projectId: "facerec-d9fa1",
-    storageBucket: "facerec-d9fa1.appspot.com",
-    messagingSenderId: "1061417028783",
-    appId: "1:1061417028783:web:3ec6e7c2762137b0b2585a"
+    apiKey: "XXXXXXXXXXXXXXXXXXXXX",
+    authDomain: "XXXXXXXXXXXXXXXXXXXXX",
+    databaseURL: "XXXXXXXXXXXXXXXXXXXXX",
+    projectId: "XXXXXXXXXXXXXXXXXXXXX",
+    storageBucket: "XXXXXXXXXXXXXXXXXXXXX",
+    messagingSenderId: "XXXXXXXXXXXXXXXXXXXXX",
+    appId: "XXXXXXXXXXXXXXXXXXXXX"
 };
 
-
+var userName = 'andre';
 firebase.initializeApp(config);
 
 // Firebase Database Reference and the child
 const dbRef = firebase.database().ref();
-const usersRef = dbRef.child('andre');
+const usersRef = dbRef.child(userName);
 
 readUserData(); 
 
@@ -92,7 +92,7 @@ function userClicked(e) {
 
 		var userID = e.target.getAttribute("user-key");
 
-		const userRef = dbRef.child('andre/' + userID);
+		const userRef = dbRef.child(userName+'/' + userID);
 		const userDetailUI = document.getElementById("user-detail");
 
 		userRef.on("value", snap => {
@@ -125,7 +125,7 @@ addUserBtnUI.addEventListener("click", addUserBtnClicked)
 
 function addUserBtnClicked() {
 
-	const usersRef = dbRef.child('andre');
+	const usersRef = dbRef.child(userName);
 
 	const addUserInputsUI = document.getElementsByClassName("user-input");
 
@@ -154,7 +154,7 @@ function deleteButtonClicked(e) {
 
 		var userID = e.target.getAttribute("userid");
 
-		const userRef = dbRef.child('andre/' + userID);
+		const userRef = dbRef.child(userName+'/' + userID);
 		
 		userRef.remove();
 
@@ -171,7 +171,7 @@ function editButtonClicked(e) {
 	//set user id to the hidden input field
 	document.querySelector(".edit-userid").value = e.target.getAttribute("userid");
 
-	const userRef = dbRef.child('andre/' + e.target.getAttribute("userid"));
+	const userRef = dbRef.child(userName+'/' + e.target.getAttribute("userid"));
 
 	// set data to the user field
 	const editUserInputsUI = document.querySelectorAll(".edit-user-input");
@@ -198,7 +198,7 @@ function editButtonClicked(e) {
 function saveUserBtnClicked(e) {
  
 	const userID = document.querySelector(".edit-userid").value;
-	const userRef = dbRef.child('andre/' + userID);
+	const userRef = dbRef.child(userName+'/' + userID);
 
 	var editedUserObject = {}
 
