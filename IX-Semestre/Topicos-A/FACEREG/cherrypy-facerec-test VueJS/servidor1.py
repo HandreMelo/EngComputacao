@@ -16,10 +16,7 @@ class facerecServer(object):
     def cadastrar(self, ufile, uname, *args, **post):
         upload_path = ufile.file
         resultado = facerec6.cadastrar(upload_path,uname)
-        return '''<html><body><img src="/static/smile.jpg"><h1>'''+resultado+'''</h1><button onclick="goBack()">VOLTAR</button>
-        <script>function goBack() {
-  window.history.back();
-}</script></body></html>'''
+        return resultado
 
     @cherrypy.expose
     def procurar(self, ufile):
@@ -64,7 +61,7 @@ if __name__ == '__main__':
             'tools.staticdir.dir': './public'
         },
         'global': 
-            {'server.socket_host': '192.168.1.103'}
+            {'server.socket_host': '192.168.42.217'}
         
     }
 

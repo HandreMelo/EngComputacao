@@ -1,12 +1,3 @@
-Vue.mixin({
-  data: function() {
-    return {
-      dbRef:'global'
-    }
-  }
-})
-
-
 new Vue({
   el: '#app',
   vuetify: new Vuetify(),
@@ -19,6 +10,7 @@ new Vue({
         sortable: false,
         value: 'nome',
       },
+      { image: 'Photo', value: 'photo'},
       { text: 'Email', value: 'email' },
       { text: 'Telefone', value: 'telefone' },
       { text: 'Actions', value: 'actions', sortable: false },
@@ -36,12 +28,14 @@ new Vue({
     },
     editedItem: {
       key: '',
+      photo: '',
       nome: '',
       email: '',
       telefone: 0,
     },
     defaultItem: {
       nome: '',
+      photo: '',
       email: '',
       telefone: 0,
     },
@@ -66,6 +60,9 @@ new Vue({
   methods: {
 
     initialize () {
+      if(this.persons.length>0){
+        this.persons.splice(0, this.person.length-1)
+      } 
       var refPerson = this.persons;
       var lastUser = ''
 
@@ -101,15 +98,18 @@ new Vue({
 
     deleteItem (item) {
       const index = this.persons.indexOf(item)
-      confirm('Você tem certeza que deseja deletar este item?') && this.persons.splice(index, 1)
+      const dbRef = firebase.database().ref();
+      var userId = item.key;
+      const userRef = dbRef.child('phelipe/' + userId);
+      confirm('Você tem certeza que deseja deletar este item?') && userRef.remove();
     },
 
     close () {
       this.dialog = false
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem)
-        this.editedIndex = -1
-      })
+  //    this.$nextTick(() => {
+  //      this.editedItem = Object.assign({}, this.defaultItem)
+  //      this.editedIndex = -1
+  //    })
     },
 
     save () {
@@ -136,6 +136,20 @@ new Vue({
         userRef.push(newUser);
       }
       this.close()
+    },
+
+    sendToPy(crud, userId, file){
+      var formData = new FormData();
+    
+      xhr = new XMLHttpRequest();
+	    xhr.open('POST', '/'+crud,true);
+      if(crud == 'atualizar' || crud == 'cadastrar') {
+        formData.append('ufile', file);
+      }
+      formData.append('uname', userId);
+      xhr.send(formData);
+
+	    this.close();
     },
   },
 })

@@ -22,7 +22,7 @@ def cadastrar(file,name):
         raise
         return "Ocorreu um erro ao salvar os dados"
     
-    return "Foto cadastrada com sucesso"
+    return image_encoding
     
 def deletar(name):
     all_face_encodings = {}

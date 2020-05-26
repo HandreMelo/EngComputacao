@@ -37,6 +37,15 @@
                   <v-container>
                     <v-row>
                       <v-col cols="12" sm="6" md="4">
+                        <!--<img src="/static/images.jpg" width="50" height="50">-->
+                        <v-avatar :size="90" rounded>
+                          <img src="/static/Person.jpg">
+                        </v-avatar>
+                        <button type="button"><input type="file"></button>
+                      </v-col>
+                    </v-row>
+                    <v-row>
+                      <v-col cols="12" sm="6" md="4">
                         <v-text-field v-model="editedItem.nome" label="Nome"></v-text-field>
                       </v-col>
                       <v-col cols="12" sm="6" md="4">
