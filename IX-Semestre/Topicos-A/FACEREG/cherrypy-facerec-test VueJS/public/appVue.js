@@ -10,7 +10,6 @@ new Vue({
         sortable: false,
         value: 'nome',
       },
-      { image: 'Photo', value: 'photo'},
       { text: 'Email', value: 'email' },
       { text: 'Telefone', value: 'telefone' },
       { text: 'Actions', value: 'actions', sortable: false },
@@ -39,6 +38,7 @@ new Vue({
       email: '',
       telefone: 0,
     },
+    face: '',
   }),
 
   computed: {
@@ -106,6 +106,7 @@ new Vue({
 
     close () {
       this.dialog = false
+      document.getElementById('face-file').src = "/static/Person.jpg";
   //    this.$nextTick(() => {
   //      this.editedItem = Object.assign({}, this.defaultItem)
   //      this.editedIndex = -1
@@ -139,7 +140,8 @@ new Vue({
     },
 
     processFile(event){
-      var file = event.target.files[0]; 
+      var file = event.target.files[0];
+      this.face = file; 
 
       document.getElementById('face-file').src = URL.createObjectURL(file);
     },

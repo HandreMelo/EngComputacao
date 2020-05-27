@@ -37,11 +37,10 @@
                   <v-container>
                     <v-row>
                       <v-col cols="12" sm="6" md="4">
-                        <!--<img src="/static/images.jpg" width="50" height="50">-->
                         <v-avatar :size="90" rounded>
-                          <img src="/static/Person.jpg">
+                          <img id="face-file" src="/static/Person.jpg">
                         </v-avatar>
-                        <button type="button"><input type="file"></button>
+                        <input type="file" class="custom-file-input" @change="processFile($event)">
                       </v-col>
                     </v-row>
                     <v-row>

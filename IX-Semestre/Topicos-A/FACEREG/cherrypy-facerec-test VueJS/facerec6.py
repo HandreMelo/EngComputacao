@@ -7,8 +7,7 @@ import time
 def cadastrar(file,name):
     all_face_encodings = {}
     pickle_file = 'dataset_faces.pickle'
-    load_image = face_recognition.load_image_file(file)
-    image_encoding = face_recognition.face_encodings(load_image)[0]
+    imageEncoding = encodingImage(file)
     try:
         all_face_encodings = pickle.load(pickle_file)
     except:
@@ -22,6 +21,11 @@ def cadastrar(file,name):
         raise
         return "Ocorreu um erro ao salvar os dados"
     
+    return image_encoding
+
+def encodingImage(file):
+    load_image = face_recognition.load_image_file(file)
+    image_encoding = face_recognition.face_encodings(load_image)[0]
     return image_encoding
     
 def deletar(name):

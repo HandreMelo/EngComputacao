@@ -19,6 +19,12 @@ class facerecServer(object):
         return resultado
 
     @cherrypy.expose
+    def codificarImagem(self, ufile):
+        upload_path = ufile.file
+        image_cod = facerec6.encodingImage(upload_path)
+        return image_cod    
+
+    @cherrypy.expose
     def procurar(self, ufile):
         upload_path = ufile.file
         resultado = facerec6.procurar(upload_path)
