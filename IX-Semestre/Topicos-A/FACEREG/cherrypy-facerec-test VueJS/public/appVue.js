@@ -138,6 +138,12 @@ new Vue({
       this.close()
     },
 
+    processFile(event){
+      var file = event.target.files[0]; 
+
+      document.getElementById('face-file').src = URL.createObjectURL(file);
+    },
+
     sendToPy(crud, userId, file){
       var formData = new FormData();
     
