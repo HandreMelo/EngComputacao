@@ -26,7 +26,7 @@
             <v-spacer></v-spacer>
             <v-dialog v-model="dialog" max-width="500px">
               <template v-slot:activator="{ on }">
-                <v-btn color="primary" dark class="mb-2" v-on="on">New Item</v-btn>
+                <v-btn color="primary" dark class="mb-2" v-on="on">Novo Cadastro</v-btn>
               </template>
               <v-card>
                 <v-card-title>
@@ -40,7 +40,7 @@
                         <v-avatar :size="90" rounded>
                           <img id="face-file" src="/static/Person.jpg">
                         </v-avatar>
-                        <input type="file" class="custom-file-input" @change="processFile($event)">
+                        <input type="file" id="fileAdd" class="custom-file-input" @change="processFile($event)">
                       </v-col>
                     </v-row>
                     <v-row>
@@ -61,6 +61,37 @@
                   <v-spacer></v-spacer>
                   <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
                   <v-btn color="blue darken-1" text @click="save">Save</v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+            <v-dialog v-model="search" max-width="500px">
+              <template v-slot:activator="{ on }">
+                <v-btn color="primary" dark class="mb-2" v-on="on" style="margin-left: 15px;">Procurar</v-btn>
+              </template>
+              <v-card>
+                <v-card-title>
+                  <span class="headline">Procurar por foto</span>
+                </v-card-title>
+    
+                <v-card-text>
+                  <v-container>
+                    <v-row>
+                      <v-col cols="12" sm="6" md="4">
+                        <v-avatar :size="90" rounded>
+                          <img id="face-file" src="/static/Person.jpg">
+                        </v-avatar>
+                        <input type="file" id="fileSearch" class="custom-file-input" @change="processFile($event)">
+                        <input class="headline" id="searchResult" value="xundas" 
+                                style="display: none; margin-top: 20px;">
+                      </v-col>
+                    </v-row>
+                  </v-container>
+                </v-card-text>
+    
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
+                  <v-btn color="blue darken-1" text @click="search">Procurar</v-btn>
                 </v-card-actions>
               </v-card>
             </v-dialog>

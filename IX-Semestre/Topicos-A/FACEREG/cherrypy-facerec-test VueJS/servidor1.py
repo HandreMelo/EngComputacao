@@ -16,28 +16,13 @@ class facerecServer(object):
     def cadastrar(self, ufile, uname, *args, **post):
         upload_path = ufile.file
         resultado = facerec6.cadastrar(upload_path,uname)
-        return resultado
-
-    @cherrypy.expose
-    def codificarImagem(self, ufile):
-        upload_path = ufile.file
-        image_cod = facerec6.encodingImage(upload_path)
-        return image_cod    
+        return resultado 
 
     @cherrypy.expose
     def procurar(self, ufile):
         upload_path = ufile.file
         resultado = facerec6.procurar(upload_path)
-        if resultado == "Não encontrou ninguém":
-            ret =  '''<html><body><img src="/static/smile.jpg"><h1>'''+resultado+'''</h1><button onclick="goBack()">VOLTAR</button>
-        <script>function goBack() {
-  window.history.back();
-}</script></body></html>'''
-        ret = '''<html><body><img src="/static/smile.jpg"><h1>ID encontrado : '''+resultado+'''</h1><button onclick="goBack()">VOLTAR</button>
-        <script>function goBack() {
-  window.history.back();
-}</script></body></html>'''
-        return ret
+        return resultado
         
     @cherrypy.expose
     def deletar(self, uname):
