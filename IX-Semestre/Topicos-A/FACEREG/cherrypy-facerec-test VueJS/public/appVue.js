@@ -3,6 +3,7 @@ new Vue({
   vuetify: new Vuetify(),
   data: () => ({
     dialog: false,
+    search: false,
     headers: [
       {
         text: 'Nome',
@@ -10,6 +11,7 @@ new Vue({
         sortable: false,
         value: 'nome',
       },
+      { image: 'Photo', value: 'photo'},
       { text: 'Email', value: 'email' },
       { text: 'Telefone', value: 'telefone' },
       { text: 'Actions', value: 'actions', sortable: false },
@@ -39,16 +41,20 @@ new Vue({
       telefone: 0,
     },
     face: '',
+    lastUser: '',
   }),
 
   computed: {
     formTitle () {
-      return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
+      return this.editedIndex === -1 ? 'Novo Cadastro' : 'Editar pessoa'
     },
   },
 
   watch: {
     dialog (val) {
+      val || this.close()
+    },
+    search (val) {
       val || this.close()
     },
   },
@@ -64,11 +70,9 @@ new Vue({
         this.persons.splice(0, this.person.length-1)
       } 
       var refPerson = this.persons;
-      var lastUser = ''
 
       firebase.initializeApp(this.config);
 
-      // Firebase Database Reference and the child
       const dbRef = firebase.database().ref();
       const usersRef = dbRef.child('phelipe');
       
@@ -106,6 +110,7 @@ new Vue({
 
     close () {
       this.dialog = false
+      this.search = false
       document.getElementById('face-file').src = "/static/Person.jpg";
   //    this.$nextTick(() => {
   //      this.editedItem = Object.assign({}, this.defaultItem)
@@ -134,16 +139,26 @@ new Vue({
         newUser['nome'] = this.editedItem.nome;
         newUser['email'] = this.editedItem.email;
         newUser['telefone'] = this.editedItem.telefone;
-        userRef.push(newUser);
+        newUser['photo'] = btoa(newUser['photo']);
+
+        userRef.push(newUser).then(pushed => {
+          this.lastUser = pushed.key;
+          if(this.face != ''){
+            this.sendToPy('cadastrar',this.lastUser,this.face)
+          } else {
+            this.face = ''
+            this.close()
+          }   
+        });
       }
-      this.close()
+      
     },
 
     processFile(event){
       var file = event.target.files[0];
-      this.face = file; 
 
       document.getElementById('face-file').src = URL.createObjectURL(file);
+      this.face = file;
     },
 
     sendToPy(crud, userId, file){
@@ -156,8 +171,30 @@ new Vue({
       }
       formData.append('uname', userId);
       xhr.send(formData);
-
-	    this.close();
+      xhr.onload = function(e) {
+        this.face = ''
+        this.lastUser = ''
+        this.close();
+      }
     },
+
+    searchPerson(){
+      var retorno = ''
+
+      if(this.face != '') {
+        var formData = new formData('ufile', this.face)
+        xhr = new XMLHttpRequest();
+        xhr.open('POST', '/procurar',true)
+        xhr.send(formData)
+        xhr.onload = function(e) {
+          retorno = String(xhr.response)
+        }
+
+      } else {
+        retorno = "Não foi selecionado nenhuma foto"
+      }
+      document.getElementById('searchResult').value = retorno;
+      document.getElementById('searchResult').style.display = "block";
+    }
   },
 })
