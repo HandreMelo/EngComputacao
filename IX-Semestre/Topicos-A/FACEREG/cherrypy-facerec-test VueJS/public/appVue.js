@@ -165,7 +165,7 @@ new Vue({
       var formData = new FormData();
     
       xhr = new XMLHttpRequest();
-	    xhr.open('POST', '/'+crud,true);
+	  xhr.open('POST', '/'+crud,true);
       if(crud == 'atualizar' || crud == 'cadastrar') {
         formData.append('ufile', file);
       }
@@ -174,16 +174,19 @@ new Vue({
       xhr.onload = function(e) {
         this.face = ''
         this.lastUser = ''
-        this.close();
       }
+	  this.close()
     },
 
     searchPerson(){
       var retorno = ''
 
       if(this.face != '') {
-        var formData = new formData('ufile', this.face)
+        var formData = new FormData()
+		formData.append('ufile', this.face)
+		
         xhr = new XMLHttpRequest();
+		
         xhr.open('POST', '/procurar',true)
         xhr.send(formData)
         xhr.onload = function(e) {
