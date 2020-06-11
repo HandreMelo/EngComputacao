@@ -179,7 +179,6 @@ new Vue({
     },
 
     searchPerson(){
-      var retorno = ''
 
       if(this.face != '') {
         var formData = new FormData()
@@ -190,14 +189,13 @@ new Vue({
         xhr.open('POST', '/procurar',true)
         xhr.send(formData)
         xhr.onload = function(e) {
-          retorno = String(xhr.response)
+		  document.querySelector('#searchResult').innerHTML = xhr.response;
         }
 
       } else {
-        retorno = "Não foi selecionado nenhuma foto"
+        document.querySelector('#searchResult').innerHTML = "Não foi selecionado nenhuma foto"
       }
-      document.getElementById('searchResult').value = retorno;
-      document.getElementById('searchResult').style.display = "block";
+      document.querySelector('#searchResult').style.display = "block";
     }
   },
 })
