@@ -14,6 +14,7 @@ class facerecServer(object):
 
     @cherrypy.expose
     def cadastrar(self, ufile, uname, *args, **post):
+        print(type(ufile.file), uname)
         upload_path = ufile.file
         resultado = facerec6.cadastrar(upload_path,uname)
         return resultado 

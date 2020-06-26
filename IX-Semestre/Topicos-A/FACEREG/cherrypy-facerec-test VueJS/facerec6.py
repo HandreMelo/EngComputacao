@@ -1,7 +1,6 @@
 import face_recognition
 import numpy as np
 from dataIO import pk as pickle
-import time
 #import image_decoder as imdec
 #https://pythonhosted.org/dataIO/pk.html
 def cadastrar(file,name):

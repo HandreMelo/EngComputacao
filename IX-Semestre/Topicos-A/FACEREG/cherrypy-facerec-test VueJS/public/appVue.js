@@ -66,12 +66,14 @@ new Vue({
   methods: {
 
     initialize () {
-      if(this.persons.length>0){
-        this.persons.splice(0, this.person.length-1)
-      } 
-      var refPerson = this.persons;
 
-      firebase.initializeApp(this.config);
+      if(this.persons.length > 0) {
+        this.persons.splice(0, this.persons.length);
+      }
+
+      if (!firebase.apps.length) {
+        firebase.initializeApp(this.config);
+      }
 
       const dbRef = firebase.database().ref();
       const usersRef = dbRef.child('phelipe');
@@ -83,7 +85,7 @@ new Vue({
           let key = childSnap.key;
           let value = childSnap.val();
 
-          refPerson.push({
+          this.persons.push({
             key: key,
             nome: value.nome, 
             email: value.email, 
@@ -105,17 +107,15 @@ new Vue({
       const dbRef = firebase.database().ref();
       var userId = item.key;
       const userRef = dbRef.child('phelipe/' + userId);
-      confirm('Você tem certeza que deseja deletar este item?') && userRef.remove();
+      confirm('Você tem certeza que deseja deletar este item?') && userRef.remove() && this.persons.splice(0, this.persons.length);
+      this.initialize();
     },
 
     close () {
       this.dialog = false
       this.search = false
       document.getElementById('face-file').src = "/static/Person.jpg";
-  //    this.$nextTick(() => {
-  //      this.editedItem = Object.assign({}, this.defaultItem)
-  //      this.editedIndex = -1
-  //    })
+      this.initialize();
     },
 
     save () {
@@ -130,6 +130,7 @@ new Vue({
         editedUserObject['telefone'] = this.editedItem.telefone;
 
         userRef.update(editedUserObject);
+        this.close();
 
       } else {
         const dbRef = firebase.database().ref();
@@ -140,6 +141,7 @@ new Vue({
         newUser['email'] = this.editedItem.email;
         newUser['telefone'] = this.editedItem.telefone;
         newUser['photo'] = btoa(newUser['photo']);
+        this.persons.splice(0, this.persons.length);
 
         userRef.push(newUser).then(pushed => {
           this.lastUser = pushed.key;
@@ -165,7 +167,7 @@ new Vue({
       var formData = new FormData();
     
       xhr = new XMLHttpRequest();
-	  xhr.open('POST', '/'+crud,true);
+	    xhr.open('POST', '/'+crud,true);
       if(crud == 'atualizar' || crud == 'cadastrar') {
         formData.append('ufile', file);
       }
@@ -175,7 +177,7 @@ new Vue({
         this.face = ''
         this.lastUser = ''
       }
-	  this.close()
+	    this.close()
     },
 
     searchPerson(){
