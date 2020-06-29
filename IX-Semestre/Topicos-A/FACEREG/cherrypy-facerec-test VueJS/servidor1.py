@@ -2,6 +2,8 @@ import facerec6
 import os.path
 import cherrypy
 from cherrypy.lib import static
+import webcam_cp as wc
+import requisicao as req
 #https://www.programcreek.com/python/example/401/base64.b64decode
 
 localDir = os.path.dirname(__file__)
@@ -20,18 +22,26 @@ class facerecServer(object):
         return resultado 
 
     @cherrypy.expose
-    def procurar(self, ufile):
-        upload_path = ufile.file
-        resultado = facerec6.procurar(upload_path)
+    def procurar(self):
+        resultado = wc.acesso()
+        print(resultado)
+        #if resultado != "404" and resultado != "Ninguem cadastrado":
+           # req.acesso("liberar")
+            
         return resultado
+    
+    @cherrypy.expose
+    def bloquear(self):
+        req.acesso("bloquear")
+    
+    @cherrypy.expose
+    def liberar(self):
+        req.acesso("liberar")
         
     @cherrypy.expose
     def deletar(self, uname):
         resultado = facerec6.deletar(uname)
-        return '''<html><body><h1>Usuário removido com sucesso</h1><button onclick="goBack()">VOLTAR</button>
-        <script>function goBack() {
-  window.history.back();
-}</script></body></html>'''
+        return resultado
 
     @cherrypy.expose
     def atualizar(self, ufile, uname, *args, **post):
@@ -53,7 +63,7 @@ if __name__ == '__main__':
             'tools.staticdir.dir': './public'
         },
         'global': 
-            {'server.socket_host': '192.168.42.217'}
+            {'server.socket_host': 'localhost'}
         
     }
 

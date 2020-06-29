@@ -107,11 +107,14 @@ new Vue({
       const dbRef = firebase.database().ref();
       var userId = item.key;
       const userRef = dbRef.child('phelipe/' + userId);
-      confirm('Você tem certeza que deseja deletar este item?') && userRef.remove() && this.persons.splice(0, this.persons.length);
+      confirm('Você tem certeza que deseja deletar este item?') && userRef.remove()
+                                     && this.persons.splice(0, this.persons.length)
+                                     && this.deletePhotoPerson(userId);
       this.initialize();
     },
 
     close () {
+      this.clearData();
       this.dialog = false
       this.search = false
       document.getElementById('face-file').src = "/static/Person.jpg";
@@ -130,6 +133,8 @@ new Vue({
         editedUserObject['telefone'] = this.editedItem.telefone;
 
         userRef.update(editedUserObject);
+        this.clearData();
+        this.persons.splice(0, this.persons.length);
         this.close();
 
       } else {
@@ -148,8 +153,9 @@ new Vue({
           if(this.face != ''){
             this.sendToPy('cadastrar',this.lastUser,this.face)
           } else {
-            this.face = ''
-            this.close()
+            this.face = '';
+            this.clearData();
+            this.close();
           }   
         });
       }
@@ -180,24 +186,37 @@ new Vue({
 	    this.close()
     },
 
+    deletePhotoPerson(uname){
+      xhr = new XMLHttpRequest();
+      xhr.open('POST','/deletar',true);
+      xhr.send(uname);
+      xhr.onload = function(e) {
+        alert(xhr.response);
+      }
+    },
+
     searchPerson(){
 
-      if(this.face != '') {
-        var formData = new FormData()
-		formData.append('ufile', this.face)
-		
-        xhr = new XMLHttpRequest();
-		
-        xhr.open('POST', '/procurar',true)
-        xhr.send(formData)
-        xhr.onload = function(e) {
-		  document.querySelector('#searchResult').innerHTML = xhr.response;
-        }
-
-      } else {
-        document.querySelector('#searchResult').innerHTML = "Não foi selecionado nenhuma foto"
+      var formData = new FormData()
+      formData.append('ufile', this.face)
+  
+      xhr = new XMLHttpRequest();
+  
+      xhr.open('POST', '/procurar',true)
+      xhr.send()
+      xhr.onload = function(e) {
+        document.querySelector('#searchResult').innerHTML = xhr.response;
       }
       document.querySelector('#searchResult').style.display = "block";
-    }
+    },
+
+    clearData(){
+      this.editedItem.nome = '';
+      this.editedItem.email = '';
+      this.editedItem.telefone = '';
+      this.face = '';
+      document.querySelector('#face-file').src = "/static/Person.jpg";
+
+    },
   },
 })
