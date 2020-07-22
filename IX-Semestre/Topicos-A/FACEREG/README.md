@@ -13,7 +13,7 @@ Projeto desenvolvido para manutenção de dados de usuários através de um site
 	O ID retornado do Firebase é enviado ao servidor CherryPy junto à foto.
 	A foto é analisada e os descritores da foto são armazenados localmente associados ao ID do usuário.
 ##### Busca
-	Para retormar os dados, através do site é enviado um pedido de reconhecimento para o servidor que habilita a câmera que tiver sido configurada.
+	Para retormar os dados, através do site é enviado um pedido de reconhecimento para o servidor que habilita <br> a câmera que tiver sido configurada.
 	Se o usuário for reconhecido então seu ID é retornado ao site através do servidor.
 
 ------------
@@ -21,17 +21,21 @@ Projeto desenvolvido para manutenção de dados de usuários através de um site
 
 #### Tecnologias e bibliotecas utilizadas
 
-**- Site: **
---Linguagem: Vue.js, Javascript ES6 e HTML
-**- Servidor:**
+- **SITE:**
+-- Linguagem: Vue.js, Javascript ES6 e HTML
+
+- **SERVIDOR:**
 -- Linguagem: Python
 -- Bibliotecas: CherryPy, Requests
-**- Reconhecimento Facial:**
---Linguagem: Python
---Bibliotecas: Face Recognition
-**-Banco de Dados**
---Tecnologias: Utilização do SDK do banco de dados não-relacional Firebase via CDN.
---Linguagem: API em Javascript fornecida pelo Firebase
+
+- **BANCO DE DADOS**
+-- Tecnologias: Utilização do SDK do banco de dados não-relacional Firebase via CDN.
+-- Linguagem: API em Javascript fornecida pelo Firebase
+
+- **RECONHECIMENTO FACIAL:**
+-- Linguagem: Python
+-- Bibliotecas: Face Recognition
+
 
 ------------
 #### Configurando o Projeto
